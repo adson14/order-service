@@ -1,0 +1,26 @@
+FROM node:18-alpine
+
+RUN apk add --no-cache bash sudo
+
+RUN apk add --no-cache bash sudo git openssh-client curl
+
+WORKDIR /app
+
+RUN npm install -g @nestjs/cli
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN chown -R node:node /app
+
+RUN echo "node ALL=(ALL) NOPASSWD: /bin/chown, /bin/rm" >> /etc/sudoers
+
+RUN npm run build
+
+EXPOSE 3001
+
+# Comando para rodar o aplicativo
+CMD ["npm", "run", "start:dev"]
