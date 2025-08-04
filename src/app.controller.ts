@@ -22,7 +22,7 @@ export class AppController {
   } {
     //Preciso implementar a lógica de processamento do pedido aqui
 
-    this.kafkaClient.emit('process-payment', order);
+    this.kafkaClient.emit('process_payment', order);
     return { message: 'Pedido recebido com sucesso!', order };
   }
 }
