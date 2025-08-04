@@ -1,6 +1,7 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
+import { orderData } from '../types/order';
 
 @Controller()
 export class AppController {
@@ -15,7 +16,10 @@ export class AppController {
   }
 
   @MessagePattern('order_created')
-  handleOrderCreated(@Payload() order: any) {
+  handleOrderCreated(@Payload() order: orderData): {
+    message: string;
+    order: orderData;
+  } {
     //Preciso implementar a lógica de processamento do pedido aqui
 
     this.kafkaClient.emit('process-payment', order);
