@@ -10,19 +10,10 @@ export class AppController {
     @Inject('KAFKA_SERVICE_order') private readonly kafkaClient: ClientKafka,
   ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
   @MessagePattern('order_created')
-  handleOrderCreated(@Payload() order: orderData): {
-    message: string;
-    order: orderData;
-  } {
+  handleOrderCreated(@Payload() order: orderData): void {
     //Preciso implementar a lógica de processamento do pedido aqui
-
     this.kafkaClient.emit('process_payment', order);
-    return { message: 'Pedido recebido com sucesso!', order };
+    console.log('Pedido recebido:', order);
   }
 }
